@@ -1,0 +1,99 @@
+{% load static %}
+<header class="header_area">
+  <div class="main_menu">
+    <style>
+      .navbar {
+        background-color: #789DBC;
+        border-radius: 0;
+        padding: 10px 0; /* Adds padding to make the navbar less cramped */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-nav {
+        justify-content: center; /* Center the nav items */
+        width: 100%; /* Ensure full width to allow centering */
+      }
+
+      .navbar-nav .nav-item {
+        margin: 0 15px; /* Adjusts the space between nav items */
+      }
+
+      .navbar-brand {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: white; /* Color for the logo */
+      }
+
+      .nav-link {
+        color: white;
+        font-size: 1.1em;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-link:hover {
+        color: #C9E9D2; /* Hover color for the links */
+      }
+
+      .navbar-toggler {
+        border: none;
+        outline: none;
+      }
+
+      .navbar-toggler .icon-bar {
+        background-color: white;
+        display: block;
+        width: 22px;
+        height: 2px;
+        margin: 4px 0;
+      }
+
+      @media (max-width: 992px) {
+        .navbar-nav {
+          text-align: center;
+          justify-content: flex-start;
+        }
+
+        .navbar-nav .nav-item {
+          margin: 10px 0; /* Stack the nav items with some space on smaller screens */
+        }
+
+        .navbar-nav {
+          width: 100%;
+        }
+      }
+    </style>
+    
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+
+        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="{% url "medium:index" %}"><h3>Home<h3></a></li>
+              {% if user.is_authenticated %}
+             
+              
+                
+                <li class="nav-item"><a class="nav-link" href="{% url 'userauth:logout' %}"><h3>Logout<h3></a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url "userauth:profile" %}"><h3> Hi {{request.user}}<h3></a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'userauth:login' %}"><h3><i class="fa fa-user"></i> Login<h3></a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'userauth:register' %}"><h3>Register<h3></a></li>
+                  
+                
+              
+              {% endif %}
+
+            
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
