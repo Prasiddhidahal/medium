@@ -2,8 +2,14 @@
 
 html {
   height:100%;
-}
 
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+.content {
+    flex: 1;
+}
 nav {
   
   
@@ -362,11 +368,10 @@ body{
     text-overflow: ellipsis;
 }
 
-/* Optional: Add a specific height or margin to the description */
 .mb-4 {
     margin-bottom: 20px;
 }
-/* Justify text and ensure words break properly */
+
 .text-justify {
     text-align: justify;
     word-wrap: break-word;
@@ -379,6 +384,8 @@ body{
        mask-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, #754f4f 25%, #763f3f 75%, rgba(255, 255, 255, 0) 100%); 
       color: white;
       text-align: center;
+      bottom: 0;
+      position: relative;
     }
 
     .footer_logo a {
@@ -402,13 +409,13 @@ body{
     .footer_text {
       font-size: 0.9em;
       color: #bbb;
-      text-align: center; /* Center footer text */
+      text-align: center; 
     }
 
     .footer_social img {
       width: 30px;
       height: 30px;
-      margin: 0 10px; /* Space between icons */
+      margin: 0 10px; 
     }
 
     /* Footer nav links */
@@ -418,7 +425,7 @@ body{
     }
 
     .footer_top .menu_nav .nav-link:hover {
-      color: #1da1f2; /* Link hover color */
+      color: #1da1f2; 
     }
 
     @media (max-width: 768px) {

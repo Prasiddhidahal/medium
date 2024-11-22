@@ -24,8 +24,13 @@
             
             <!-- Edit and Delete buttons -->
             {% if user == post.author %}
-            <a href="{% url 'medium:edit' post.id %}" class="btn btn-primary">Edit</a>
-            <a href="{% url 'medium:delete' post.id %}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete</a>
+            <a href="{% url 'medium:edit' post.id %}" class="btn btn-primary">Edit 
+              <img src="/media/edit.png" alt="edit" style="width: 20px; height: 20px; margin-left: 5px;">
+</a>
+            </a>
+            <a href="{% url 'medium:delete' post.id %}" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete
+                <img src="/media/delete.png" alt="delete" style="width: 20px; height: 20px; margin-left: 5px;">
+            </a>
             {% endif %}
         </div>
     </div>
