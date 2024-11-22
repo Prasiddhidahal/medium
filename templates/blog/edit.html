@@ -13,34 +13,18 @@
                 <div class="card-body">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-
                         
+                        <!-- Display Image if Exists -->
                         <div class="mb-3 text-center">
                             {% if post.image %}
                                 <img src="{{ post.image.url }}" alt="Blog Image" class="img-fluid mb-3" style="max-width: 100%; height: auto;">
-                       
                             {% endif %}
                         </div>
-                        {% comment %} 
 
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="title" value="{{ post.title }}" required>
-                        </div>
+                        <!-- Render Form Fields -->
+                        {{ form.as_p }}
 
-                        
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Update Blog Image</label>
-                            <input type="file" class="form-control" id="image" name="image">
-                        </div>
-
-                        
-                        <div class="mb-3">
-                            <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" id="content" name="content" rows="5" required>{{ post.content }}</textarea>
-                        </div>  commented out form as we can render form easily using formasp {% endcomment %}
-                        {{form.as_p}}
-
+                        <!-- Save Changes Button -->
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                     </form>
                 </div>
@@ -48,6 +32,4 @@
         </div>
     </div>
 </div>
-
-
-{%endblock%}
+{% endblock %}

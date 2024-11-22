@@ -5,7 +5,7 @@ from django.conf import settings
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name="Post Title")
-    image = models.ImageField(upload_to='static/', verbose_name="Post Image")
+    image = models.ImageField(upload_to='post/', verbose_name="Post Image")
     content = models.TextField(verbose_name="Post Content")
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Author")
     date_posted = models.DateTimeField(auto_now_add=True, verbose_name="Date Posted")

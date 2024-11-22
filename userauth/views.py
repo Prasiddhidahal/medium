@@ -11,7 +11,7 @@ User = get_user_model()
 @csrf_protect
 def register_user(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = UserRegisterForm(request.POST, request.FILES) 
         if form.is_valid():
             
             new_user = form.save()
@@ -36,7 +36,7 @@ def register_user(request):
     return render(request, 'userauth/register.html', context)
 
 
-@csrf_protect
+
 @csrf_protect
 def user_login(request):
     if request.user.is_authenticated:
@@ -76,10 +76,12 @@ def user_logout(request):
 @login_required
 def profile(request):
     if request.method == 'POST':
+        print(request.POST)
         user = request.user
-        user.email = request.POST.get('email')
+      
         user.first_name = request.POST.get('first_name')
         user.last_name = request.POST.get('last_name')
+        user.image = request.FILES.get('image')
         user.save()
 
         messages.success(request, "Your profile has been updated successfully!")

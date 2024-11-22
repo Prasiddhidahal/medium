@@ -1,48 +1,57 @@
 {% extends "partials/base.html" %}
 
-{% load static %} 
+{% load static %}
 
 {% block content %}
-<div class="container">
-    {% if user.is_authenticated %}
-        <!-- Button to write a blog, visible only to authenticated users -->
-        <div class="mb-3">
-            <a href="{% url 'medium:create_blog'  %}" class="btn btn-primary">Write a Blog</a>
-        </div>
-    {% endif %}
-</div>
+<div class="container my-5">
+    <!-- Blog section -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            {% for p in posts %}
+            <div class="post-content mb-5">
+                <div class="row align-items-center">
+                    <!-- Blog Content (Author, Date, Title, Excerpt) -->
+                    <div class="col-md-8">
+                        <!-- Author and Date -->
+                        <div class="d-flex align-items-center mb-2">
+                            
+                            <div>
+                                <h6 class="mb-0">{{ p.author.username }}</h6>
+                                <small class="text-muted">{{ p.date_posted }}</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Blog Title -->
+                        <a href="{% url 'medium:view' p.id %}" class="text-dark text-decoration-none">
+                            <h4 class="post-title">{{ p.title }}</h4>
+                        </a>
 
-<!-- Blog -->
-<div class="row mt-5">
-    <div class="col-md-12">
-        {% for p in posts %}
-        <div class="card shadow mb-4">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
+                        <!-- Blog Excerpt -->
+                        <p class="text-muted">{{ p.content|truncatechars:60 }}</p>
+                    </div>
+
+                    <!-- Blog Image -->
+                    <div class="col-md-4 text-end">
                         {% if p.image %}
-                            <img src="{{ p.image.url }}" alt="{{ p.title }}" class="img-fluid">
+                        <img src="{{ p.image.url }}" alt="{{ p.title }}" class="img-fluid rounded" style="max-width: 250px;">
                         {% else %}
-                            <img src="{% static 'images/default_image.jpg' %}" alt="Default Image" class="img-fluid">
+                        <img src="{% static 'images/default_image.jpg' %}" alt="Default Image" class="img-fluid rounded" style="max-width: 250px;">
                         {% endif %}
                     </div>
-                    <div class="col-md-8">
-                        <small>{{ p.date_posted }}</small>
-                        <hr>
-                        <a class="text-dark" href="{% url 'medium:view' p.id %}">
-                            <h5 class="card-title">{{ p.title }}</h5>
-                        </a>
-                        <p class="card-text">{{ p.content|truncatewords:30 }}</p> 
-                    </div>
                 </div>
+
+                <!-- Read More Button -->
+                <div class="text-end mt-2">
+                    <a href="{% url 'medium:view' p.id %}" class="btn btn-outline-primary">Read More</a>
+                </div>
+
+                <!-- Line under the post -->
+                <hr class="mt-4">
             </div>
-            <div class="card-footer">
-                <a href="{% url 'medium:view' p.id %}" class="btn btn-primary">Read More</a>
-            </div>
+            {% empty %}
+            <p>No blog posts available.</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p>No blog posts available.</p>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}
