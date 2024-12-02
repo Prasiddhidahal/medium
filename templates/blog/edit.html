@@ -13,20 +13,18 @@
                 <div class="px-6 py-4">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
-                        
-                        <!-- Display Image if Exists -->
+      
                         <div class="mb-4 text-center">
                             {% if post.image %}
                                 <img src="{{ post.image.url }}" alt="Blog Image" class="img-fluid mb-3 max-w-full h-auto rounded-lg">
                             {% endif %}
                         </div>
 
-                        <!-- Render Form Fields -->
+                     
                         <div class="space-y-4">
                             {{ form.as_p }}
                         </div>
 
-                        <!-- Save Changes Button -->
                         <button type="submit" class="w-full mt-4 inline-flex items-center justify-center bg-[#9DBDFF] hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">
     <img src="/media/save.png" alt="save" class="w-5 h-5 mr-2">
     Save Changes

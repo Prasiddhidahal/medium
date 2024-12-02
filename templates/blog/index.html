@@ -5,32 +5,26 @@
 {% block content %}
 {% tailwind_css %}
 <div class="container my-5">
-    <!-- Blog section -->
     <div class="flex justify-center">
         <div class="w-full md:w-10/12">
             {% for p in posts %}
             <div class="post-content mb-5">
                 <div class="flex flex-col md:flex-row items-start justify-between">
-                    <!-- Blog Content (Author, Date, Title, Excerpt) -->
                     <div class="w-full md:w-2/3 mb-4 md:mb-0">
-                        <!-- Author and Date -->
                         <div class="flex items-center mb-2">
                             <div class="mr-4">
                                 <h6 class="text-gray-800 font-semibold">{{ p.author.username }}</h6>
                                 <small class="text-muted">{{ p.date_posted }}</small>
                             </div>
                         </div>
-                        
-                        <!-- Blog Title -->
+
                         <a href="{% url 'medium:view' p.id %}" class="text-dark text-decoration-none">
                             <h4 class="post-title text-lg font-bold text-gray-900">{{ p.title }}</h4>
                         </a>
 
-                        <!-- Blog Excerpt -->
                         <p class="text-muted text-sm">{{ p.content|truncatechars:60 }}</p>
                     </div>
 
-                    <!-- Blog Image -->
                     <div class="w-full md:w-1/3 flex justify-center md:justify-end">
                         {% if p.image %}
                         <img src="{{ p.image.url }}" alt="{{ p.title }}" class="img-fluid rounded" style="max-width: 250px;">
@@ -39,8 +33,6 @@
                         {% endif %}
                     </div>
                 </div>
-
-                <!-- Read More Button -->
                 <div class="mt-4 text-center md:text-right">
                    <a href="{% url 'medium:view' p.id %}" class="inline-flex items-center bg-[#9DBDFF] hover:bg-gray-500 text-white font-bold py-2 px-4 rounded mt-4">
     Read More
@@ -48,8 +40,6 @@
 </a>
 
                 </div>
-
-                <!-- Line under the post -->
                 <hr class="mt-4">
             </div>
             {% empty %}
