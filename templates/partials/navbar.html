@@ -1,37 +1,28 @@
 {% load static %}
-
-<header class="header_area">
+{% load static tailwind_tags %}
+<header class="header_area text-white py-4" style="background-color: #7695FF;">
   <div class="main_menu">
-    
-    
-    <nav>
-  <ul>
-    <li class="nav-item"><a class="nav-link" href="{% url "medium:index" %}">Home</a></li>
-              {% if user.is_authenticated %}
-   <li class="nav-item"><a class="nav-link" href="{% url 'userauth:logout' %}">Logout</a></li>
-                  <li class="nav-item"><a class="nav-link" href="{% url "userauth:profile" %}"> Hi {{request.user}}</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'userauth:login' %}"><i class="fa fa-user"></i> Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'userauth:register' %}">Register</a></li>
-              {% endif %}
-   {% if user.is_authenticated %}
-        <!-- Button to write a blog, visible only to authenticated users -->
-        <div class="mb-3">
-            <a href="{% url 'medium:create_blog' %}" class="d-flex align-items-center justify-content-center">
-    <img src="/media/write.png" alt="Create Blog Icon" class="me-2">
+    <nav class="container mx-auto flex justify-center items-center">
+      <ul class="flex justify-center space-x-10 mt-4">
+        {% tailwind_css %}
+        <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'medium:index' %}">Home</a></li>
+        {% if user.is_authenticated %}
+          <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:logout' %}">Logout</a></li>
+          <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:profile' %}">Hi, {{ request.user }}</a></li>
+        {% else %}
+          <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:login' %}"><i class="fa fa-user"></i> Login</a></li>
+          <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:register' %}">Register</a></li>
+        {% endif %}
+      </ul>
 
-
-    Create Blog
-</a>
-
-        </div>
-    {% endif %}
-            
-          </ul>
-        </div>
+      {% if user.is_authenticated %}
+      <div class="ml-5">
+        <a href="{% url 'medium:create_blog' %}" class="flex items-center bg-gradient-to-r from-[#9DBDFF] to-grey text-white py-2 px-4 rounded-lg hover:bg-gradient-to-l transition duration-300 bold h5">
+          <img src="/media/write.png" alt="Create Blog Icon" class="w-10 h-10 mr-2">
+          Create Blog
+        </a>
       </div>
+      {% endif %}
     </nav>
   </div>
 </header>
-
-
