@@ -2,32 +2,33 @@
 
 {% load static %} 
 {% load static tailwind_tags %}
+
 {% block content %}
 {% tailwind_css %}
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-center">
-                    Edit Blog Post
-                </div>
-                <div class="card-body">
+<div class="container mx-auto my-8">
+    <div class="flex justify-center">
+        <div class="w-full md:w-2/3 lg:w-1/2">
+            <div class="py-4">
+               <h1 class="text-2xl font-bold place-items-center items-center">Edit a Blog Post</h1>
+                <div class="px-6 py-4">
                     <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         
                         <!-- Display Image if Exists -->
-                        <div class="mb-3 text-center">
+                        <div class="mb-4 text-center">
                             {% if post.image %}
-                                <img src="{{ post.image.url }}" alt="Blog Image" class="img-fluid mb-3" style="max-width: 100%; height: auto;">
+                                <img src="{{ post.image.url }}" alt="Blog Image" class="img-fluid mb-3 max-w-full h-auto rounded-lg">
                             {% endif %}
                         </div>
 
                         <!-- Render Form Fields -->
-                        {{ form.as_p }}
+                        <div class="space-y-4">
+                            {{ form.as_p }}
+                        </div>
 
                         <!-- Save Changes Button -->
-                        <button type="submit" class="btn btn-primary">
-    <img src="/media/save.png" alt="save" style="width: 20px; height: 20px; margin-right: 5px;">
+                        <button type="submit" class="w-full mt-4 inline-flex items-center justify-center bg-[#9DBDFF] hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg">
+    <img src="/media/save.png" alt="save" class="w-5 h-5 mr-2">
     Save Changes
 </button>
 
@@ -38,3 +39,4 @@
     </div>
 </div>
 {% endblock %}
+

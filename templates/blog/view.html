@@ -12,22 +12,12 @@
         <img src="{{ post.image.url }}" alt="Post Image" class="img-fluid rounded-lg">
     </div>
 {% endif %}
-
-            
-          
-        
-
-            <!-- Author below the title -->
             <p class="mt-2"><strong>Author:</strong> {{ post.author.username }}</p>
             <p><strong>Created:</strong> {{ post.date_posted }}</p>
             <p><strong>Last Updated:</strong> {{ post.date_updated }}</p>
-            
-            <!-- Blog Content with Justified Text -->
             <div class="mb-4 text-justify">
                 <h5>{{ post.content }}</h5>
             </div>
-            
-            <!-- Edit and Delete buttons -->
             {% if user == post.author %}
             <div class="flex justify-start space-x-3 mt-4">
                 <a href="{% url 'medium:edit' post.id %}" class="btn inline-flex items-center bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
@@ -43,7 +33,6 @@
         </div>
     </div>
 
-    <!-- Modal for delete confirmation -->
     <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
