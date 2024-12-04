@@ -1,0 +1,61 @@
+{% load static %}
+
+<div class="containerr">
+    <div class="header">
+        <div class="nav">
+            <!-- Admin Dashboard Title -->
+            <div class="admin-title">
+                <h1>Admin Dashboard</h1>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search">
+                <input type="text" placeholder="Search..">
+                <button type="submit">
+                    <img src="/media/search.png" alt="Search Icon">
+                </button>
+            </div>
+
+            <!-- User Section -->
+            <div class="user">
+                <div class="gif-container">
+                    <img src="/media/notification.png" alt="Notification Icon">
+                </div>
+                <div class="img-case">
+                    <img src="/media/user.png" alt="User Icon" class="user-icon">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="row">
+          
+            <div class="col-md-12">
+                <div class="list-group">
+                    <li class="list-group-item d-flex align-items-center">
+    <a href="{% url 'userauth:dashboard' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/dashboard.png" alt="dashboard" class="w-5 h-5 mr-2"> Dashboard
+    </a>
+</li>
+
+                    <li class="list-group-item">
+    <a href="{% url 'userauth:usermanagement' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/user.png" alt="User Management" class="w-5 h-5 mr-2">
+        User Management
+    </a>
+</li>
+                    <li class="list-group-item">
+    <a href="{% url 'userauth:authorinfo' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/author.png" alt="Authors" class="w-5 h-5 mr-2">Authors
+    </a>
+</li>
+
+                    
+                    <li class="list-group-item"><img src="/media/review.png" alt="dashboard" class="w-5 h-5 mr-2"> Review</li>
+                    <li class="list-group-item"><img src="/media/settings.png" alt="dashboard" class="w-5 h-5 mr-2"> Settings</li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

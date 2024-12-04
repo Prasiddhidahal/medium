@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm
+from django.contrib.auth.decorators import login_required
 
 
 #medium Views
@@ -70,3 +71,4 @@ def create_blog(request):
     }
     
     return render(request, 'blog/create.html', context)
+    

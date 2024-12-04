@@ -9,12 +9,12 @@ class PostForm(forms.ModelForm):
             'title': 'Post Title',
             'image': 'Post Image',
             'content': 'Post Content',
-            'author': 'Author'
+            
         }
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'image': forms.FileInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control'}),
-            'author': forms.Select(attrs={'class': 'form-control'})
+            
         }
 

@@ -7,6 +7,7 @@ class User(AbstractUser):
     bio = models.CharField(max_length=255)
     image=models.ImageField(upload_to='profile/')
     
+    
     USERNAME_FIELD = "email"  # Login will be with email instead of username 
     REQUIRED_FIELDS = ["username"]
 
