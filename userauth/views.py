@@ -9,6 +9,8 @@ from medium.models import Post
 from django.utils import timezone
 from django.db.models import Count
 from django.db.models.functions import TruncHour
+from django.urls import reverse
+from django.shortcuts import get_object_or_404
 User = get_user_model()  
 
 @csrf_protect
@@ -182,17 +184,89 @@ def adminnavbar(request):
     return render(request, 'userauth/adminnavbar.html')
 
 @login_required
-def usermanagement(request):
+def user_management(request):
     users = User.objects.all()
+    return render(request, 'userauth/usermanagement.html', {'users': users})
+
+def delete_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+    return redirect('userauth:usermanagement')
+
+def view_user(request, id):
+    # Use get_object_or_404 to handle case where user is not found
+    user = get_object_or_404(User, id=id)
+    
     context = {
-        'users': users,
+        'user': user,
     }
-    return render(request, 'userauth/usermanagement.html', context)
+
+    # Render the correct template (update with your actual template path)
+    return render(request, 'userauth/view_user.html', context)
+
+def edit_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        # Update the user's details
+        user.username = request.POST['username']
+        user.email = request.POST['email']
+        user.save()
+        return redirect(reverse('userauth:usermanagement'))
+
+    return render(request, 'userauth/edit_user.html', {'user': user})
 
 @login_required
 def authorinfo(request):
-    authors = Post.objects.filter(author__isnull=False).values('author').distinct()
+    # Get distinct authors who have posts
+    authors = User.objects.filter(post__isnull=False).distinct()
+
+    # Fetch posts and related user information
+    posts = Post.objects.select_related('author').all()
+
     context = {
-        'authors': authors,
+        'authors': authors,  # You can use this to list distinct authors if needed
+        'posts': posts,      # This will be used to display post details with user information
     }
+
     return render(request, 'userauth/authorinfo.html', context)
+
+
+def edit_post(request, post_id):
+    print(f"Post ID: {post_id}")
+    post = Post.objects.get(id=post_id)  # Correct model (Post, not User)
+    if request.method == 'POST':
+        # Update the post's details
+        post.title = request.POST['title']
+        post.content = request.POST['content']
+        # If the post has an image, you may want to handle it as well
+        # Example: post.image = request.FILES['image'] (if you're handling image uploads)
+        post.save()
+        return redirect('userauth:authorinfo')
+
+    return render(request, 'userauth/edit_post.html', {'post': post})
+
+
+def view_post(request, id):
+    # Use get_object_or_404 to fetch the Post object with the given id
+    post = get_object_or_404(Post, id=id)
+
+    # Pass the post object to the template context
+    context = {
+        'post': post,
+    }
+
+    # Render the post detail page template
+    return render(request, 'userauth/view_post.html', context)
+
+def delete_post(request, post_id):
+    # Fetch the post using post_id
+    post = get_object_or_404(Post, id=post_id)
+
+    # Delete the post
+    post.delete()
+
+    # Redirect to the author info page after deletion
+    return redirect('userauth:authorinfo')
+
+def Settings(request):
+    return render(request, 'userauth/Settings.html')

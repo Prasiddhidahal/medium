@@ -1,0 +1,56 @@
+{% extends "partials/baseadmin.html" %}
+
+{% block content %}
+<div class="container mx-auto mt-4 px-4">
+    <div class="bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-2xl font-semibold mb-6">Edit Posts</h2>
+
+        <!-- Display any form errors -->
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- Edit Post Form -->
+        <form method="post" enctype="multipart/form-data">  <!-- Added enctype for image upload -->
+            {% csrf_token %}
+            
+            <!-- Title Field -->
+            <div class="mb-4">
+                <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
+                <input type="text" id="title" name="title" value="{{ post.title }}" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+            </div>
+
+            <!-- Content Field -->
+            <div class="mb-4">
+                <label for="content" class="block text-sm font-medium text-gray-700">Content</label>
+                <textarea id="content" name="content" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">{{ post.content }}</textarea>
+            </div>
+
+            <!-- Image Field (Optional) -->
+            <div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+                <input type="file" id="image" name="image" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="Post Image" class="mt-2 max-w-full h-auto">
+                {% endif %}
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

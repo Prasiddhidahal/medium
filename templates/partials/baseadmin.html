@@ -1,36 +1,164 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
 
-    <title>Admin Dashboard</title>
+  <!-- Tailwind CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+<style>
+  * {
+    margin: 0;
+    box-sizing: border-box;
+  }
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-  </head>
-  <body>
+  /* Navbar styling */
+  .nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px; /* Smaller height for the navbar */
+    background-color: #7695FF;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000; /* Ensures it stays on top */
+  }
 
-  <!-- Admin Navbar -->
-  {% include "partials/adminnavbar.html" %}
+  .admin-title h1 {
+    font-size: 24px;
+    color: white;
+  }
 
-  <!-- Content Block -->
-  <div class="container">
-      {% block content %}
-      <!-- Content will be added by child templates -->
-      {% endblock %}
+  .search {
+    display: flex;
+    align-items: center;
+  }
+
+  .search input {
+    padding: 5px;
+    margin-right: 10px;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+  }
+
+  .user img {
+    width: 30px;
+    height: 30px;
+    margin-left: 15px; /* Space between icons */
+  }
+
+  /* Sidebar styling */
+  .sidebar {
+    position: fixed;
+    top: 70px; /* Offset by the height of the navbar */
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 70px); /* Height minus the navbar */
+    background-color: white;
+    overflow-y: auto; /* Allows the sidebar to be scrollable if needed */
+  }
+
+  /* Content styling */
+  .content {
+    margin-left: 200px; /* Leave space for the sidebar */
+   padding: 100px 20px 20px 20px;
+
+  
+    {% comment %} overflow-y: auto;  {% endcomment %}
+  }
+
+  /* List group item */
+  .list-group-item {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Adjustments for icon size */
+  .w-5 {
+    width: 25px;
+    height: 25px;
+  }
+
+  .mr-2 {
+    margin-right: 10px;
+  }
+</style>
+
+<!-- Admin Navbar -->
+<div class="nav">
+  <div class="admin-title">
+    <h1>Admin Dashboard</h1>
   </div>
 
-  <!-- Optional JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
-  </body>
+  <div class="search">
+    <input type="text" placeholder="Search..">
+    <button type="submit">
+      <img src="/media/search.png" alt="Search Icon">
+    </button>
+  </div>
+
+  <div class="user">
+    <img src="/media/notification.png" alt="Notification Icon">
+    <img src="/media/user.png" alt="User Icon" class="user-icon">
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="list-group">
+    <li class="list-group-item">
+      <a href="{% url 'userauth:dashboard' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/dashboard.png" alt="Dashboard" class="w-5 h-5 mr-2"> Dashboard
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% url 'userauth:usermanagement' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/user.png" alt="User Management" class="w-5 h-5 mr-2"> User Management
+      </a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% url 'userauth:authorinfo' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/author.png" alt="Authors" class="w-5 h-5 mr-2"> Posts by Authors
+      </a>
+    </li>
+    {% comment %} <li class="list-group-item">
+      <img src="/media/review.png" alt="Review" class="w-5 h-5 mr-2"> Review
+    </li> {% endcomment %}
+    <li class="list-group-item">
+      <a href="{% url 'userauth:Settings' %}" class="d-flex align-items-center text-decoration-none text-dark">
+        <img src="/media/settings.png" alt="Authors" class="w-5 h-5 mr-2"> Settings
+      </a>
+    </li>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="content">
+  {% block content %}
+  
+    <!-- Content will be added by child templates -->
+    {% endblock %}
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block content %}
-<div class="container mx-auto mt-4 px-4">
+
+
+
     <div class="header">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
             <!-- Total Users Card -->
@@ -30,9 +32,7 @@
             </div>
         </div>
     </div>
-</div>
 
-<!-- Authors and Posts Activity Graph -->
 <div class="bg-white shadow-lg p-4 rounded-lg mt-6">
     <h5 class="text-xl font-semibold mb-4">Number of Posts Activity</h5>
     <canvas id="activityChart2"></canvas>
@@ -78,6 +78,10 @@
             }
         }
     });
-</script>
+    </script> 
+
+<!-- Authors and Posts Activity Graph -->
+
+
 
 {% endblock %}
