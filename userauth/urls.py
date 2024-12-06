@@ -10,7 +10,6 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('baseadmin/', views.baseadmin, name='baseadmin'),
     path('dashboard/', views.dashboard, name='dashboard'),
-    path('adminnavbar/', views.adminnavbar, name='adminnavbar'),
     path('usermanagement/', views.user_management, name='usermanagement'),
     path('delete_user/<int:user_id>/', views.delete_user, name='delete_user'),
     path('edit_user/<int:user_id>/', views.edit_user, name='edit_user'),
@@ -20,4 +19,5 @@ urlpatterns = [
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('authorinfo/', views.authorinfo, name='authorinfo'),
     path('Settings/', views.Settings, name='Settings'),
+    path('unauthorized/', views.unauthorized, name='unauthorized'),
 ]

@@ -106,16 +106,21 @@
     <h1>Admin Dashboard</h1>
   </div>
 
-  <div class="search">
+  {% comment %} <div class="search">
     <input type="text" placeholder="Search..">
     <button type="submit">
       <img src="/media/search.png" alt="Search Icon">
     </button>
-  </div>
+  </div> {% endcomment %}
 
   <div class="user">
-    <img src="/media/notification.png" alt="Notification Icon">
-    <img src="/media/user.png" alt="User Icon" class="user-icon">
+    {% comment %} <img src="/media/notification.png" alt="Notification Icon"> {% endcomment %}
+    {% if request.user.image %}
+    <img src="{{ request.user.image.url }}" alt="User Profile Picture" class="user-icon">
+{% else %}
+    <img src="/media/default_user.png" alt="Default User Icon" class="user-icon">
+{% endif %}
+
   </div>
 </div>
 

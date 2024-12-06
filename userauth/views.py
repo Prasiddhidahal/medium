@@ -11,6 +11,7 @@ from django.db.models import Count
 from django.db.models.functions import TruncHour
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import update_session_auth_hash
 User = get_user_model()  
 
 @csrf_protect
@@ -95,25 +96,36 @@ def profile(request):
     return render(request, 'userauth/profile.html', {'user': request.user})
 
 
+
+
 @login_required
 def baseadmin(request):
+    # Restrict access to superusers only
+    if not request.user.is_superuser:
+        return redirect('userauth:unauthorized')  # Redirect to unauthorized view if user is not superuser
+
     # Fetching user data
     total_users = User.objects.count()
+    authors = Post.objects.filter(author__isnull=False).values('author').distinct().count()
+    total_posts = Post.objects.count()
 
-    
     # Fetch admin details
     admins = User.objects.all()
-
+    
     context = {
         'admins': admins,
         'total_users': total_users,
-        
+        'authors': authors,
+        'total_posts': total_posts,
     }
     return render(request, 'userauth/dashboard.html', context)
 
 @login_required
-
 def dashboard(request):
+    # Restrict access to superusers only
+    if not request.user.is_superuser:
+        return redirect('userauth:unauthorized')  # Redirect to unauthorized view if user is not superuser
+
     # Get the current date to filter posts and user registrations created today
     now = timezone.now()
     start_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
@@ -179,12 +191,13 @@ def dashboard(request):
     return render(request, 'userauth/dashboard.html', context)
 
 
-@login_required
-def adminnavbar(request):
-    return render(request, 'userauth/adminnavbar.html')
+
+
 
 @login_required
 def user_management(request):
+    if not request.user.is_superuser:
+        return redirect('userauth:unauthorized') 
     users = User.objects.all()
     return render(request, 'userauth/usermanagement.html', {'users': users})
 
@@ -217,6 +230,8 @@ def edit_user(request, user_id):
 
 @login_required
 def authorinfo(request):
+    if not request.user.is_superuser:
+        return redirect('userauth:unauthorized') 
     # Get distinct authors who have posts
     authors = User.objects.filter(post__isnull=False).distinct()
 
@@ -268,5 +283,57 @@ def delete_post(request, post_id):
     # Redirect to the author info page after deletion
     return redirect('userauth:authorinfo')
 
+
+@csrf_protect
+@login_required
 def Settings(request):
+    if not request.user.is_superuser:
+        return redirect('userauth:unauthorized') 
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        try:
+            # Get the user based on the provided email
+            user = get_object_or_404(User, email=email)
+
+            # Check if the provided current password matches the user's password
+            if user.check_password(current_password):
+                # Ensure new password and confirm password match
+                if new_password == confirm_password:
+                    # Set the new password
+                    user.set_password(new_password)
+                    user.save()
+
+                    # Re-login the user to the session with updated password
+                    login(request, user)
+
+                    # Display success message
+                    messages.success(request, 'Your password has been successfully updated.')
+
+                    # Redirect to dashboard or another page
+                    return redirect('userauth:dashboard')  # Or any other page after success
+                else:
+                    # If new passwords do not match, show error
+                    messages.error(request, 'New passwords do not match.')
+                    return render(request, 'userauth/Settings.html')
+            else:
+                # If the current password does not match, show error
+                messages.error(request, 'Current password is incorrect.')
+                return render(request, 'userauth/Settings.html')
+
+        except User.DoesNotExist:
+            # If the email does not match any user, show error
+            messages.error(request, 'No user found with this email.')
+            return render(request, 'userauth/Settings.html')
+
+    # If it's not a POST request, just render the form
     return render(request, 'userauth/Settings.html')
+
+@login_required
+def unauthorized(request):
+    return render(request, 'userauth/unauthorized.html', {
+        'message': 'You do not have permission to access this page.'
+    })
