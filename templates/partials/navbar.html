@@ -9,6 +9,7 @@
         {% if user.is_authenticated %}
           <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:logout' %}">Logout</a></li>
           <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:profile' %}">Hi, {{ request.user }}</a></li>
+          <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:dashboard' %}">Admin Dashboard</a></li>
         {% else %}
           <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:login' %}"><i class="fa fa-user"></i> Login</a></li>
           <li class="nav-item"><a class="nav-link hover:text-gray-200 font-bold h5" href="{% url 'userauth:register' %}">Register</a></li>
