@@ -1,11 +1,10 @@
 {% extends "partials/baseadmin.html" %}
-
+{% load static tailwind_tags %}
 {% block content %}
 <div class="container mx-auto mt-4 px-4">
+    {% tailwind_css %}
     <div class="bg-white shadow-lg rounded-lg p-6">
         <h2 class="text-2xl font-semibold mb-6">View User</h2>
-
-        <!-- Display User Profile Image -->
         {% if user.image %}
         <div class="flex justify-center mb-3">
             <img src="{{ user.image.url }}" alt="User Profile Image" class="img-fluid rounded-lg w-24 h-24">

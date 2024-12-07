@@ -1,42 +1,31 @@
 {% extends "partials/baseadmin.html" %}
-
 {% block content %}
-<div class="container">
-    <h2>Change Password</h2>
+{% load static tailwind_tags %}
+<div class="container mx-auto mt-8 max-w-lg">
+    {% tailwind_css %}
+    <h2 class="text-2xl font-bold mb-4">Change Password</h2>
     <form method="POST">
-        {% csrf_token %} 
-        
-        <!-- Email Field -->
-        <div class="form-group">
-            <label for="email">Email address</label>
-            <input type="email" name="email" id="email" class="form-control" required>
+        {% csrf_token %}
+        <div class="mb-4">
+            <label for="email" class="block text-gray-700">Email address</label>
+            <input type="email" name="email" id="email" class="form-control w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
-        <!-- Current Password Field -->
-        <div class="form-group">
-            <label for="current_password">Current Password</label>
-            <input type="password" name="current_password" id="current_password" class="form-control" required>
+        <div class="mb-4">
+            <label for="current_password" class="block text-gray-700">Current Password</label>
+            <input type="password" name="current_password" id="current_password" class="form-control w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
-        <!-- New Password Field -->
-        <div class="form-group">
-            <label for="new_password">New Password</label>
-            <input type="password" name="new_password" id="new_password" class="form-control" required>
+        <div class="mb-4">
+            <label for="new_password" class="block text-gray-700">New Password</label>
+            <input type="password" name="new_password" id="new_password" class="form-control w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
-        <!-- Confirm New Password Field -->
-        <div class="form-group">
-            <label for="confirm_password">Confirm New Password</label>
-            <input type="password" name="confirm_password" id="confirm_password" class="form-control" required>
+        <div class="mb-4">
+            <label for="confirm_password" class="block text-gray-700">Confirm New Password</label>
+            <input type="password" name="confirm_password" id="confirm_password" class="form-control w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
-        <!-- Submit Button -->
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Change Password</button>
     </form>
-
-    <!-- Error Messages -->
     {% if error %}
-    <div class="alert alert-danger mt-3">{{ error }}</div>
+    <div class="bg-red-500 text-white p-3 rounded-md mt-4">{{ error }}</div>
     {% endif %}
 </div>
 {% endblock %}

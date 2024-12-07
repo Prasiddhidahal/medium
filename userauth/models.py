@@ -5,10 +5,8 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=50, unique=True)
     bio = models.CharField(max_length=255)
-    image=models.ImageField(upload_to='profile/')
-    
-    
-    USERNAME_FIELD = "email"  # Login will be with email instead of username 
+    image=models.ImageField(upload_to='profile/')   
+    USERNAME_FIELD = "email"  
     REQUIRED_FIELDS = ["username"]
 
     def __str__(self):

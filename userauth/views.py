@@ -19,21 +19,14 @@ def register_user(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST, request.FILES) 
         if form.is_valid():
-            
             new_user = form.save()
-
-            
             usernames = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {usernames}!')
-
-            # Authenticate the new user
             new_user = authenticate(username=form.cleaned_data['email'],
                                     password=form.cleaned_data['password1'])
-
-            # Log in the user and redirect
             if new_user is not None:
                 login(request, new_user)
-                return redirect('medium:index')  # Redirect to the home page
+                return redirect('medium:index') 
     else:
         form = UserRegisterForm()
     context = {
@@ -78,7 +71,6 @@ def user_logout(request):
 
     return redirect('userauth:login')
 
-#userprofile
 @login_required
 def profile(request):
     if request.method == 'POST':
@@ -91,8 +83,6 @@ def profile(request):
         user.save()
 
         messages.success(request, "Your profile has been updated successfully!")
-        
-
     return render(request, 'userauth/profile.html', {'user': request.user})
 
 
@@ -100,16 +90,11 @@ def profile(request):
 
 @login_required
 def baseadmin(request):
-    # Restrict access to superusers only
     if not request.user.is_superuser:
-        return redirect('userauth:unauthorized')  # Redirect to unauthorized view if user is not superuser
-
-    # Fetching user data
+        return redirect('userauth:unauthorized') 
     total_users = User.objects.count()
     authors = Post.objects.filter(author__isnull=False).values('author').distinct().count()
     total_posts = Post.objects.count()
-
-    # Fetch admin details
     admins = User.objects.all()
     
     context = {
@@ -124,13 +109,13 @@ def baseadmin(request):
 def dashboard(request):
     # Restrict access to superusers only
     if not request.user.is_superuser:
-        return redirect('userauth:unauthorized')  # Redirect to unauthorized view if user is not superuser
+        return redirect('userauth:unauthorized')  
 
-    # Get the current date to filter posts and user registrations created today
+    #current date to filter posts and user registrations created today
     now = timezone.now()
     start_time = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-    # Aggregating posts by hour for users and authors
+    #posts by hour for users and authors
     user_posts_by_hour = Post.objects.filter(date_posted__gte=start_time, author__isnull=True) \
         .annotate(hour=TruncHour('date_posted')).values('hour') \
         .annotate(count=Count('id')).order_by('hour')
@@ -139,18 +124,18 @@ def dashboard(request):
         .annotate(hour=TruncHour('date_posted')).values('hour') \
         .annotate(count=Count('id')).order_by('hour')
 
-    # Aggregating total posts by hour
+    # total posts by hour
     total_posts_by_hour = Post.objects.filter(date_posted__gte=start_time) \
         .annotate(hour=TruncHour('date_posted')).values('hour') \
         .annotate(count=Count('id')).order_by('hour')
 
-    # Aggregating user registrations by hour
+    # user registrations by hour
     user_registrations_by_hour = User.objects.filter(date_joined__gte=start_time) \
         .annotate(hour=TruncHour('date_joined')).values('hour') \
         .annotate(count=Count('id')).order_by('hour')
 
-    # Prepare the data for the charts
-    hours = list(range(0, 24))  # Full 24 hours range
+    #  data for the charts
+    hours = list(range(0, 24))
     user_data = [0] * 24
     author_data = [0] * 24
     post_data = [0] * 24
@@ -181,18 +166,14 @@ def dashboard(request):
         'hours': hours,
         'user_data': user_data,
         'author_data': author_data,
-        'post_data': post_data,  # Total posts for the second chart
-        'user_registration_data': user_registration_data,  # Registered users per hour
+        'post_data': post_data,  
+        'user_registration_data': user_registration_data, 
         'total_users': total_users,
         'authors': authors,
         'total_posts': total_posts,
     }
 
     return render(request, 'userauth/dashboard.html', context)
-
-
-
-
 
 @login_required
 def user_management(request):
@@ -207,54 +188,41 @@ def delete_user(request, user_id):
     return redirect('userauth:usermanagement')
 
 def view_user(request, id):
-    # Use get_object_or_404 to handle case where user is not found
     user = get_object_or_404(User, id=id)
-    
     context = {
         'user': user,
     }
-
-    # Render the correct template (update with your actual template path)
     return render(request, 'userauth/view_user.html', context)
 
 def edit_user(request, user_id):
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
-        # Update the user's details
         user.username = request.POST['username']
         user.email = request.POST['email']
         user.save()
         return redirect(reverse('userauth:usermanagement'))
-
     return render(request, 'userauth/edit_user.html', {'user': user})
 
 @login_required
 def authorinfo(request):
     if not request.user.is_superuser:
         return redirect('userauth:unauthorized') 
-    # Get distinct authors who have posts
     authors = User.objects.filter(post__isnull=False).distinct()
-
-    # Fetch posts and related user information
     posts = Post.objects.select_related('author').all()
 
     context = {
-        'authors': authors,  # You can use this to list distinct authors if needed
-        'posts': posts,      # This will be used to display post details with user information
+        'authors': authors,  
+        'posts': posts,      
     }
-
     return render(request, 'userauth/authorinfo.html', context)
 
 
 def edit_post(request, post_id):
     print(f"Post ID: {post_id}")
-    post = Post.objects.get(id=post_id)  # Correct model (Post, not User)
+    post = Post.objects.get(id=post_id) 
     if request.method == 'POST':
-        # Update the post's details
         post.title = request.POST['title']
         post.content = request.POST['content']
-        # If the post has an image, you may want to handle it as well
-        # Example: post.image = request.FILES['image'] (if you're handling image uploads)
         post.save()
         return redirect('userauth:authorinfo')
 
@@ -262,25 +230,15 @@ def edit_post(request, post_id):
 
 
 def view_post(request, id):
-    # Use get_object_or_404 to fetch the Post object with the given id
     post = get_object_or_404(Post, id=id)
-
-    # Pass the post object to the template context
     context = {
         'post': post,
     }
-
-    # Render the post detail page template
     return render(request, 'userauth/view_post.html', context)
 
 def delete_post(request, post_id):
-    # Fetch the post using post_id
     post = get_object_or_404(Post, id=post_id)
-
-    # Delete the post
     post.delete()
-
-    # Redirect to the author info page after deletion
     return redirect('userauth:authorinfo')
 
 
@@ -296,40 +254,25 @@ def Settings(request):
         confirm_password = request.POST.get('confirm_password')
 
         try:
-            # Get the user based on the provided email
             user = get_object_or_404(User, email=email)
-
-            # Check if the provided current password matches the user's password
             if user.check_password(current_password):
-                # Ensure new password and confirm password match
                 if new_password == confirm_password:
-                    # Set the new password
                     user.set_password(new_password)
                     user.save()
-
-                    # Re-login the user to the session with updated password
                     login(request, user)
-
-                    # Display success message
                     messages.success(request, 'Your password has been successfully updated.')
 
-                    # Redirect to dashboard or another page
-                    return redirect('userauth:dashboard')  # Or any other page after success
+                    return redirect('userauth:dashboard') 
                 else:
-                    # If new passwords do not match, show error
                     messages.error(request, 'New passwords do not match.')
                     return render(request, 'userauth/Settings.html')
             else:
-                # If the current password does not match, show error
                 messages.error(request, 'Current password is incorrect.')
                 return render(request, 'userauth/Settings.html')
 
         except User.DoesNotExist:
-            # If the email does not match any user, show error
             messages.error(request, 'No user found with this email.')
             return render(request, 'userauth/Settings.html')
-
-    # If it's not a POST request, just render the form
     return render(request, 'userauth/Settings.html')
 
 @login_required

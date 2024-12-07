@@ -1,33 +1,39 @@
 {% extends "partials/baseadmin.html" %}
 {% load static %}
-
+{% load static tailwind_tags %}
 {% block content %}
-<div class="container">
-  <h1>Posts</h1>
-
-  <!-- Table to display user data and their posts -->
-  <table class="table table-striped">
-    <thead>
+<div class="container mx-auto mt-8">
+  {% tailwind_css %}
+  <h1 class="text-3xl font-bold mb-6">Posts</h1>
+  <table class="min-w-full bg-white border border-gray-300">
+    <thead class="bg-gray-200">
       <tr>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Post Title</th>
-        <th>Description</th>
+        <th class="py-2 px-4 text-left">Username</th>
+        <th class="py-2 px-4 text-left">Email</th>
+        <th class="py-2 px-4 text-left">Post Title</th>
+        <th class="py-2 px-4 text-left">Description</th>
+        <th class="py-2 px-4 text-left">Actions</th>
       </tr>
     </thead>
     <tbody>
       {% for post in posts %}
-      <tr>
-        <td>{{ post.author.username }}</td> <!-- Author's username -->
-        <td>{{ post.author.email }}</td>    <!-- Author's email -->
-        <td>{{ post.title }}</td>           <!-- Post title -->
-        <td>{{ post.content }}</td>         <!-- Post content/description -->
-        <td>
-          <a href="{% url 'userauth:edit_post' post.id %}" class="btn btn-primary">Edit post</a>
-          <a href="{% url 'userauth:delete_post' post.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post?');">Delete</a>
+      <tr class="border-t">
+        <td class="py-2 px-4">{{ post.author.username }}</td>
+        <td class="py-2 px-4">{{ post.author.email }}</td>
+        <td class="py-2 px-4">{{ post.title }}</td>
+        <td class="py-2 px-4">{{ post.content }}</td>
+        <td class="py-2 px-4 flex space-x-2">
+  <a href="{% url 'userauth:edit_post' post.id %}" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+    Edit post
+  </a>
+  <a href="{% url 'userauth:delete_post' post.id %}" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600" onclick="return confirm('Are you sure you want to delete this post?');">
+    Delete
+  </a>
+  <a href="{% url 'userauth:view_post' post.id %}" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
+    View post
+  </a>
+</td>
 
-          <a href="{% url 'userauth:view_post' post.id %}" class="btn btn-primary">View post</a>
-        </td>
       </tr>
       {% endfor %}
     </tbody>

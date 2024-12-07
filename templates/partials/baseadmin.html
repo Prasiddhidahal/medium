@@ -1,4 +1,5 @@
 {% load static %}
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,164 +7,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
 
-  <!-- Tailwind CSS -->
+
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 <body>
-<style>
-  * {
-    margin: 0;
-    box-sizing: border-box;
-  }
-
-  /* Navbar styling */
-  .nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 70px; /* Smaller height for the navbar */
-    background-color: #7695FF;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    z-index: 1000; /* Ensures it stays on top */
-  }
-
-  .admin-title h1 {
-    font-size: 24px;
-    color: white;
-  }
-
-  .search {
-    display: flex;
-    align-items: center;
-  }
-
-  .search input {
-    padding: 5px;
-    margin-right: 10px;
-  }
-
-  .user {
-    display: flex;
-    align-items: center;
-  }
-
-  .user img {
-    width: 30px;
-    height: 30px;
-    margin-left: 15px; /* Space between icons */
-  }
-
-  /* Sidebar styling */
-  .sidebar {
-    position: fixed;
-    top: 70px; /* Offset by the height of the navbar */
-    left: 0;
-    width: 200px;
-    height: calc(100vh - 70px); /* Height minus the navbar */
-    background-color: white;
-    overflow-y: auto; /* Allows the sidebar to be scrollable if needed */
-  }
-
-  /* Content styling */
-  .content {
-    margin-left: 200px; /* Leave space for the sidebar */
-   padding: 100px 20px 20px 20px;
-
-  
-    {% comment %} overflow-y: auto;  {% endcomment %}
-  }
-
-  /* List group item */
-  .list-group-item {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-  }
-
-  /* Adjustments for icon size */
-  .w-5 {
-    width: 25px;
-    height: 25px;
-  }
-
-  .mr-2 {
-    margin-right: 10px;
-  }
-</style>
-
-<!-- Admin Navbar -->
-<div class="nav">
-  <div class="admin-title">
-    <h1>Admin Dashboard</h1>
+<div class="fixed top-0 w-full h-16 bg-blue-500 flex justify-between items-center px-6 z-50">
+  {% tailwind_css %}
+  <div class="text-white text-xl font-semibold">
+    Admin Dashboard
   </div>
 
-  {% comment %} <div class="search">
-    <input type="text" placeholder="Search..">
-    <button type="submit">
-      <img src="/media/search.png" alt="Search Icon">
-    </button>
-  </div> {% endcomment %}
-
-  <div class="user">
-    {% comment %} <img src="/media/notification.png" alt="Notification Icon"> {% endcomment %}
+  <div class="flex items-center">
     {% if request.user.image %}
-    <img src="{{ request.user.image.url }}" alt="User Profile Picture" class="user-icon">
-{% else %}
-    <img src="/media/default_user.png" alt="Default User Icon" class="user-icon">
-{% endif %}
-
+    <img src="{{ request.user.image.url }}" alt="User Profile Picture" class="w-8 h-8 rounded-full">
+    {% else %}
+    <img src="/media/default_user.png" alt="Default User Icon" class="w-8 h-8 rounded-full">
+    {% endif %}
   </div>
 </div>
-
-<!-- Sidebar -->
-<div class="sidebar">
-  <div class="list-group">
-    <li class="list-group-item">
-      <a href="{% url 'userauth:dashboard' %}" class="d-flex align-items-center text-decoration-none text-dark">
-        <img src="/media/dashboard.png" alt="Dashboard" class="w-5 h-5 mr-2"> Dashboard
+<div class="fixed top-16 left-0 w-48 h-[calc(100vh-4rem)] bg-white border-r shadow-md">
+  <ul class="space-y-2 py-4">
+    <li>
+      <a href="{% url 'userauth:dashboard' %}" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 p-2">
+        <img src="/media/dashboard.png" alt="Dashboard" class="w-5 h-5"> 
+        <span>Dashboard</span>
       </a>
     </li>
-    <li class="list-group-item">
-      <a href="{% url 'userauth:usermanagement' %}" class="d-flex align-items-center text-decoration-none text-dark">
-        <img src="/media/user.png" alt="User Management" class="w-5 h-5 mr-2"> User Management
+    <li>
+      <a href="{% url 'userauth:usermanagement' %}" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 p-2">
+        <img src="/media/user.png" alt="User Management" class="w-5 h-5"> 
+        <span>User Management</span>
       </a>
     </li>
-    <li class="list-group-item">
-      <a href="{% url 'userauth:authorinfo' %}" class="d-flex align-items-center text-decoration-none text-dark">
-        <img src="/media/author.png" alt="Authors" class="w-5 h-5 mr-2"> Posts by Authors
+    <li>
+      <a href="{% url 'userauth:authorinfo' %}" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 p-2">
+        <img src="/media/author.png" alt="Authors" class="w-5 h-5"> 
+        <span>Posts</span>
       </a>
     </li>
-    {% comment %} <li class="list-group-item">
-      <img src="/media/review.png" alt="Review" class="w-5 h-5 mr-2"> Review
-    </li> {% endcomment %}
-    <li class="list-group-item">
-      <a href="{% url 'userauth:Settings' %}" class="d-flex align-items-center text-decoration-none text-dark">
-        <img src="/media/settings.png" alt="Authors" class="w-5 h-5 mr-2"> Settings
+    <li>
+      <a href="{% url 'userauth:Settings' %}" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 p-2">
+        <img src="/media/settings.png" alt="Settings" class="w-5 h-5"> 
+        <span>Settings</span>
       </a>
     </li>
-  </div>
+  </ul>
 </div>
-
-<!-- Main content -->
-<div class="content">
+<div class="ml-48 mt-20 p-6">
   {% block content %}
-  
-    <!-- Content will be added by child templates -->
-    {% endblock %}
-  </div>
+  {% endblock %}
 </div>
-
-<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

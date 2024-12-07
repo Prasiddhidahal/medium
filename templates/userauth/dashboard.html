@@ -1,29 +1,22 @@
 {% extends "partials/baseadmin.html" %}
 {% load static %}
-
+{% load static tailwind_tags %}
 {% block content %}
-
-
-
     <div class="header">
+        {% tailwind_css %}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
-            <!-- Total Users Card -->
             <div class="card text-center p-4 bg-white shadow-lg rounded-lg">
                 <div class="card-body">
                     <h5 class="text-xl font-semibold">Total Users</h5>
                     <p class="text-3xl font-bold text-gray-700">{{ total_users }}</p>
                 </div>
             </div>
-
-            <!-- Total Authors Card -->
             <div class="card text-center p-4 bg-white shadow-lg rounded-lg">
                 <div class="card-body">
                     <h5 class="text-xl font-semibold">Total Authors</h5>
                     <p class="text-3xl font-bold text-gray-700">{{ authors }}</p>
                 </div>
             </div>
-
-            <!-- Total Posts Card -->
             <div class="card text-center p-4 bg-white shadow-lg rounded-lg">
                 <div class="card-body">
                     <h5 class="text-xl font-semibold">Total Posts</h5>
@@ -41,13 +34,12 @@
 <!-- Scripts for Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Data for the second chart (Authors vs. Posts)
     const activityData2 = {
-        labels: {{ hours|safe }},  // Dynamically rendered hours from the view
+        labels: {{ hours|safe }},  
         datasets: [
             {
                 label: 'Authors',
-                data: {{ author_data|safe }},  // Author post counts per hour
+                data: {{ author_data|safe }}, 
                 borderColor: '#FF9800',
                 backgroundColor: 'rgba(255, 152, 0, 0.2)',
                 fill: true,
@@ -55,7 +47,7 @@
             },
             {
                 label: 'Posts',
-                data: {{ post_data|safe }},  // Total post counts per hour
+                data: {{ post_data|safe }},  
                 borderColor: '#2196F3',
                 backgroundColor: 'rgba(33, 150, 243, 0.2)',
                 fill: true,
@@ -63,8 +55,6 @@
             }
         ]
     };
-
-    // Render the second chart
     const ctx2 = document.getElementById('activityChart2').getContext('2d');
     new Chart(ctx2, {
         type: 'line',
@@ -79,9 +69,4 @@
         }
     });
     </script> 
-
-<!-- Authors and Posts Activity Graph -->
-
-
-
 {% endblock %}
